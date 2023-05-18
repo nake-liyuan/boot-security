@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserController {
 
-
     @GetMapping("/info")
     public CommonResult<Authentication> info(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
