@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ly.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.ly.entity.User">
+    <!--@mbg.generated-->
+    <!--@Table `user`-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="enabled" jdbcType="BOOLEAN" property="enabled" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_name, `password`, avatar, enabled
+  </sql>
+  <resultMap id="getUserDto" type="com.ly.security.dto.UserDto">
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="enabled" property="enabled"/>
+        <result column="avatar" property="avatar"/>
+        <collection property="roles" ofType="java.lang.String">
+            <result column="name"/>
+        </collection>
+    </resultMap>
+  <select id="loadUserByUsername" resultMap="getUserDto">
+    select u.id,u.user_name,u.password,u.avatar,u.enabled,r.name
+        from user u
+        inner join user_role ur on u.id = ur.user_id
+        left join role r on r.id = ur.role_id
+        where u.user_name=#{userName,jdbcType=VARCHAR}
+  </select>
+</mapper>
